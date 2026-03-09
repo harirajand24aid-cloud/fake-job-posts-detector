@@ -7,3 +7,4 @@ database.db
 uploads/
 .vscode/
 .idea/
+.vercel
