@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fake Job Post Detector</title>
+  <link rel="stylesheet" href="style.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Cinzel:wght@400;600&family=Raleway:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon">🛡️</span>
+      <span class="brand-text">JobGuard</span>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#" class="nav-link active" onclick="showPage('home')">Home</a></li>
+      <li id="navLogin"><a href="#" class="nav-link" onclick="showPage('login')">Login</a></li>
+      <li id="navUpload" class="hidden"><a href="#" class="nav-link" onclick="showPage('upload')">Analyze</a></li>
+      <li id="navPreview" class="hidden"><a href="#" class="nav-link" onclick="showPage('preview')">Results</a></li>
+      <li id="navLogout" class="hidden"><a href="#" class="nav-link logout-link" onclick="logout()">Logout</a></li>
+    </ul>
+  </nav>
+
+  <!-- HOME PAGE -->
+  <div class="page active" id="page-home">
+    <div class="home-content">
+      <span class="home-sub animate-in">Harness the Power of AI Verification</span>
+      <h1 class="home-title animate-in delay-1">Protect Your Future <br> <span class="home-icon-glow">🛡️</span></h1>
+      <p class="home-desc animate-in delay-2">
+        JobGuard utilizes advanced machine learning to detect fraud, anomalies, and deceptive patterns in job listings,
+        ensuring your career journey stays secure.
+      </p>
+      <div class="animate-in delay-3">
+        <button class="btn-primary" onclick="showPage('login')">Start Verification →</button>
+      </div>
+
+      <div class="stats-row animate-in delay-4">
+        <div class="stat-card glass-card">
+          <span class="stat-num">99.2%</span>
+          <span class="stat-label">Model Accuracy</span>
+        </div>
+        <div class="stat-card glass-card">
+          <span class="stat-num">24/7</span>
+          <span class="stat-label">Real-time Analysis</span>
+        </div>
+        <div class="stat-card glass-card">
+          <span class="stat-num">Instant</span>
+          <span class="stat-label">Response Time</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGIN PAGE -->
+  <div class="page" id="page-login">
+    <div class="login-container">
+      <div class="login-card glass-card">
+        <h2 class="login-title">Secure Portal</h2>
+        <p class="login-desc">Enter your credentials to access the job analyzer.</p>
+
+        <div class="role-selector">
+          <button class="role-btn active" id="btnAdmin" onclick="selectRole('admin')">
+            <span class="role-icon">🛡️</span>
+            <span>Security Officer</span>
+          </button>
+          <button class="role-btn" id="btnUser" onclick="selectRole('user')">
+            <span class="role-icon">👤</span>
+            <span>Standard User</span>
+          </button>
+        </div>
+
+        <form class="login-form" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label>Identification</label>
+            <input type="text" id="username" placeholder="Username" required autocomplete="username" />
+          </div>
+          <div class="form-group">
+            <label>Access Key</label>
+            <div class="pw-wrap">
+              <input type="password" id="password" placeholder="Password" required autocomplete="current-password" />
+              <button type="button" class="pw-toggle" onclick="togglePw()">👁</button>
+            </div>
+          </div>
+          <div class="login-error hidden" id="loginError">⚠ Access Denied. Verification failed.</div>
+          <button type="submit" class="btn-primary full-width">Unlock Dashboard</button>
+        </form>
+
+        <div class="hint-box">
+          <strong>Demo Override:</strong><br />
+          Officer: admin / 1234 &nbsp;|&nbsp; User: user / 123
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UPLOAD PAGE -->
+  <div class="page" id="page-upload">
+    <div class="page-container">
+      <h2 class="page-title">Run Diagnostics</h2>
+      <p class="page-desc">Feed the AI a document or image for deep-layer analysis.</p>
+
+      <div class="upload-card glass-card">
+        <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
+          <div class="dz-icon">📁</div>
+          <p class="dz-text">Deploy File</p>
+          <p class="dz-sub">Drag & drop or browse</p>
+          <span class="dz-formats">X-PDF, JPG, PNG, TXT</span>
+        </div>
+        <input type="file" id="fileInput" accept="image/*,.txt,.pdf,.doc,.docx" style="display:none"
+          onchange="handleFileSelect(event)" />
+
+        <div class="file-preview hidden" id="filePreview">
+          <div class="file-info">
+            <span class="file-icon" id="previewIcon">📄</span>
+            <div>
+              <p class="file-name" id="fileName">diagnostics.log</p>
+              <p class="file-size" id="fileSize">0 KB</p>
+            </div>
+            <button class="remove-btn" onclick="removeFile()">✕</button>
+          </div>
+          <img id="imgPreview" class="img-thumb hidden" alt="Source Image" />
+        </div>
+
+        <button class="btn-primary full-width mt-20" id="analyzeBtn" onclick="analyzeFile()" disabled>
+          ⚡ Initialize Neural Analysis
+        </button>
+
+        <div class="progress-bar hidden" id="progressBar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <p class="progress-text hidden" id="progressText">Synthesizing data pools...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PREVIEW PAGE -->
+  <div class="page" id="page-preview">
+    <div class="page-container">
+      <h2 class="page-title">Intelligence Report</h2>
+      <p class="page-desc">Risk assessment and anomaly detection complete.</p>
+
+      <div class="result-grid">
+        <!-- File Preview Card -->
+        <div class="result-card glass-card preview-card" id="resultPreviewCard">
+          <h3 class="card-title">Analyzed Asset</h3>
+          <div class="uploaded-preview" id="uploadedPreview">
+            <div class="file-placeholder">📄</div>
+            <p id="resultFileName">Asset ID: NULL</p>
+          </div>
+        </div>
+
+        <!-- Prediction Card -->
+        <div class="result-card glass-card prediction-card" id="predictionCard">
+          <h3 class="card-title">System Verdict</h3>
+
+          <div class="verdict-badge" id="verdictBadge">
+            <span class="verdict-icon" id="verdictIcon">⚡</span>
+            <span class="verdict-text" id="verdictText">Processing</span>
+          </div>
+
+          <div class="confidence-section">
+            <p class="conf-label">Probability Index</p>
+            <div class="conf-bar-wrap">
+              <div class="conf-bar" id="confBar"></div>
+            </div>
+            <p class="conf-pct" id="confPct">0%</p>
+          </div>
+
+          <div class="details-section">
+            <p class="details-label">Diagnostic Log</p>
+            <p class="details-text" id="detailsText">Awaiting input...</p>
+          </div>
+
+          <div class="flags-section" id="flagsSection"></div>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <button class="btn-secondary" onclick="showPage('upload')">← New Diagnostic</button>
+        <button class="btn-primary" onclick="downloadReport()">⬇ Export Report</button>
+      </div>
+
+      <!-- History Table -->
+      <div class="history-card glass-card" id="historyCard">
+        <h3 class="card-title">Recent Intelligence</h3>
+        <div class="table-wrap">
+          <table class="history-table" id="historyTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Source</th>
+                <th>Classification</th>
+                <th>Index</th>
+                <th>Insight</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody id="historyBody">
+              <tr>
+                <td colspan="6" class="no-data">Archive Empty.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
